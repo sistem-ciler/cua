@@ -1,0 +1,34 @@
+# CUA production overlay for SRV-HTZNR-EU-SWS stack
+# Usage: docker compose -f docker-compose.yml -f docker-compose.production.yml up -d
+
+version: "3.9"
+
+services:
+  cua:
+    image: ghcr.io/sistem-ciler/cua:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-ops}:${POSTGRES_PASSWORD}@postgres:5432/cua
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-minio}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      CUA_SECRET: ${CUA_SECRET}
+      CUA_VNC_PORT_RANGE_START: "5900"
+      CUA_VNC_PORT_RANGE_END: "5910"
+    expose:
+      - "8443"
+    ports:
+      - "5900-5910:5900-5910"
+    devices:
+      - /dev/kvm:/dev/kvm
+    security_opt:
+      - seccomp:unconfined
+    cap_add:
+      - NET_ADMIN
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8443/metrics || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
