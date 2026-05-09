@@ -8,10 +8,12 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONPATH="/app/libs/python/core:/app/libs/python/computer:/app/libs/python/agent:/app/libs/python/som:/app/libs/python/computer-server:/app/libs/python/mcp-server"
 
 # Install system dependencies for ARM architecture
+# Note: libgl1-mesa-glx was removed in Debian 13 (Trixie); use libgl1 + libglx-mesa0
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     build-essential \
-    libgl1-mesa-glx \
+    libgl1 \
+    libglx-mesa0 \
     libglib2.0-0 \
     libxcb-xinerama0 \
     libxkbcommon-x11-0 \
@@ -53,4 +55,4 @@ RUN rm -rf /app/* /app/.??*
 # via host.docker.internal:7777
 
 # Default command
-CMD ["bash"] 
+CMD ["bash"]
