@@ -1,37 +1,25 @@
-# Version control
-.git
-.github
-.gitignore
+# Exclude large embedded libs that break the Docker build context
+libs/
 
-# Environment and cache
-.venv
-.env
-.env.local
-__pycache__
+# Python
 *.pyc
 *.pyo
-*.pyd
-.Python
-.pytest_cache
-.pdm-build
+__pycache__/
+*.egg-info/
+.venv/
+venv/
 
-# Distribution / packaging
-dist
-build
-*.egg-info
+# Git
+.git/
+.gitignore
 
-# Development
-.vscode
-.idea
-*.swp
-*.swo
+# Node
+node_modules/
+npm-debug.log
 
-# Docs
-docs/site
-
-# Notebooks
-notebooks/.ipynb_checkpoints
-
-# Docker
-Dockerfile
-.dockerignore 
+# Dev
+.env
+.env.*
+!.env.example
+*.md
+.DS_Store
